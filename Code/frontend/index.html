@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Learnix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 600px;
+      background-color: #ffffff;
+      padding: 30px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1f2937;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="file"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      background-color: #0d6efd;
+      color: white;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0a58ca;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row input[type="text"] {
+      flex: 1;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    #outputText {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #f1f5f9;
+      border-radius: 6px;
+      font-size: 1rem;
+      color: #111827;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div id="loginSection">
+    <h1>Learnix Assistant</h1>
+    <div class="form-group">
+      <input type="text" id="userName" placeholder="Enter your name" />
+      <button onclick="initiateChatPage()">Continue</button>
+    </div>
+  </div>
+
+  <div id="chatSection" class="hidden">
+    <h1 id="userGreeting"></h1>
+
+    <div class="form-group row">
+      <input type="text" id="userQuery" placeholder="Type your question here..." />
+      <button onclick="submitQuery()">Submit</button>
+    </div>
+
+    <div class="actions">
+      <input type="file" id="uploadInput" accept="image/*" />
+      <button onclick="submitImage()">Process Image</button>
+      <button onclick="activateSpeechInput()">Use Voice</button>
+    </div>
+
+    <div class="form-group">
+      <input type="text" id="textToSpeak" placeholder="Enter text to convert to speech..." />
+      <button onclick="triggerSpeech()">Speak</button>
+    </div>
+
+    <div id="outputText"></div>
+  </div>
+</div>
+
+<script>
+  function initiateChatPage() {
+    const name = document.getElementById("userName").value.trim();
+    if (name) {
+      document.getElementById("loginSection").classList.add("hidden");
+      document.getElementById("chatSection").classList.remove("hidden");
+      document.getElementById("userGreeting").textContent = `Hello, ${name}!`;
+    } else {
+      alert("Name is required.");
+    }
+  }
+
+  async function submitQuery() {
+    const query = document.getElementById("userQuery").value.trim();
+    const output = document.getElementById("outputText");
+
+    if (!query) {
+      output.innerHTML = "Please enter a valid query.";
+      return;
+    }
+
+    output.innerHTML = "Processing...";
+
+    try {
+      const response = await fetch('/answerquery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: query })
+      });
+      const result = await response.json();
+      output.innerHTML = result.answer;
+    } catch (error) {
+      output.innerHTML = "An error occurred while fetching the response.";
+      console.error(error);
+    }
+  }
+
+  async function submitImage() {
+    const image = document.getElementById("uploadInput").files[0];
+    const output = document.getElementById("outputText");
+
+    if (!image) {
+      alert("Please select an image file first.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    output.innerHTML = "Analyzing image...";
+
+    try {
+      const response = await fetch('/image-upload', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json();
+      output.innerHTML = result.answer;
+    } catch (error) {
+      output.innerHTML = "Error processing the image.";
+      console.error(error);
+    }
+  }
+
+  function activateSpeechInput() {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Your browser does not support speech recognition.");
+      return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("userQuery").value = transcript;
+    };
+
+    recognition.onerror = function(event) {
+      alert("Speech recognition error: " + event.error);
+    };
+
+    recognition.start();
+  }
+
+  function triggerSpeech() {
+    const message = document.getElementById("textToSpeak").value.trim();
+    if (!message) {
+      alert("Please enter some text to speak.");
+      return;
+    }
+
+    const speech = new SpeechSynthesisUtterance(message);
+    speech.lang = 'en-US';
+    window.speechSynthesis.speak(speech);
+  }
+</script>
+
+</body>
+</html>
