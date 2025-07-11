@@ -7,7 +7,7 @@ Modern classrooms lack real-time, interactive tools to address diverse student n
 2. Provides contextual responses, including textual explanations, charts, and visual aids.
 3. Detects disengagement or confusion using facial expression analysis and suggests interventions.
 
-# Uniquenss of the Project
+# Uniqueness of the Project
 Learnix is a smart AI-based learning assistant that allows students to ask questions through text, voice, or images. It uses advanced technologies like OCR for extracting text from images and speech recognition for voice input, making learning more interactive and accessible. This multimodal approach supports different learning styles and helps students engage more effectively.
 
 The system is powered by Intel’s NeuralChat model optimized with OpenVINO™, ensuring fast and efficient performance even on standard CPUs. Its lightweight design and user-friendly web interface make it ideal for classrooms with limited resources. Learnix is a flexible and scalable solution for personalized, AI-enhanced learning.
