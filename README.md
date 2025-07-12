@@ -24,5 +24,5 @@ Despite its strong performance, Learnix has a few limitations. The voice input f
 # Future Scope
 The project has considerable potential for expansion. Future enhancements include integrating full frontend voice support, improving OCR performance for handwritten and noisy text, and adding conversational memory for multi-turn question-answering. The system can also be deployed on edge devices for offline use, benefiting areas with limited internet access. Incorporating multilingual support, personalized learning feedback, and integration with educational databases can further elevate Learnix into a comprehensive AI tutor for diverse learning environments.
 
-The model must be pre-downloaded before execution.
+The model must be pre-downloaded before execution.(Working video also provided)
 https://drive.google.com/drive/folders/1uYixeAXino9OfcY8o63OMBUzbajHLdkw
