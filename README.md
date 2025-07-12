@@ -21,8 +21,8 @@ The project successfully delivers a responsive and efficient AI learning assista
 # Limitations
 Despite its strong performance, Learnix has a few limitations. The voice input feature is currently functional only in the backend and not integrated into the frontend due to UI constraints. OCR accuracy significantly drops when processing poorly lit, skewed, or handwritten text. Additionally, the system lacks advanced interaction features such as context retention for follow-up questions or dynamic conversation flows, which could enhance its usability in complex learning scenarios.
 
-The model must be pre-downloaded before execution.
-https://drive.google.com/drive/folders/1uYixeAXino9OfcY8o63OMBUzbajHLdkw
-
 # Future Scope
 The project has considerable potential for expansion. Future enhancements include integrating full frontend voice support, improving OCR performance for handwritten and noisy text, and adding conversational memory for multi-turn question-answering. The system can also be deployed on edge devices for offline use, benefiting areas with limited internet access. Incorporating multilingual support, personalized learning feedback, and integration with educational databases can further elevate Learnix into a comprehensive AI tutor for diverse learning environments.
+
+The model must be pre-downloaded before execution.
+https://drive.google.com/drive/folders/1uYixeAXino9OfcY8o63OMBUzbajHLdkw
